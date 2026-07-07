@@ -24,10 +24,24 @@ ENV_KEYS = {
 
 def load_local_env() -> dict[str, str]:
     env = os.environ.copy()
-    candidates = [
-        Path.cwd() / ".env",
-        Path(__file__).resolve().parents[1] / ".env",
+    codex_home = Path.home() / ".codex"
+    bundled_deps = Path.home() / ".cache" / "codex-runtimes" / "codex-primary-runtime" / "dependencies"
+    path_entries = [
+        codex_home / "bin",
+        bundled_deps / "node" / "bin",
+        bundled_deps / "bin",
     ]
+    existing_path = env.get("PATH", "")
+    env["PATH"] = os.pathsep.join([str(item) for item in path_entries if item.exists()] + [existing_path])
+    candidates = []
+    for item in (Path.cwd(), *Path.cwd().parents):
+        candidates.append(item / ".env")
+    candidates.extend(
+        [
+            Path(__file__).resolve().parents[1] / ".env",
+            codex_home / ".env",
+        ]
+    )
     for env_path in candidates:
         if not env_path.exists():
             continue
@@ -45,7 +59,14 @@ def load_local_env() -> dict[str, str]:
 
 
 def ensure_higgsfield_cli() -> str:
-    executable = shutil.which("higgsfield")
+    env = load_local_env()
+    executable = shutil.which("higgsfield", path=env.get("PATH"))
+    if not executable:
+        for name in ("higgsfield.cmd", "higgsfield.exe", "higgsfield"):
+            candidate = Path.home() / ".codex" / "bin" / name
+            if candidate.exists():
+                executable = str(candidate)
+                break
     if not executable:
         raise RuntimeError(
             "Missing Higgsfield CLI. Install it with `npm install -g @higgsfield/cli`, "
@@ -103,13 +124,14 @@ def _parse_json_output(text: str) -> Any:
 
 def _run_json(args: list[str], timeout_sec: int | None = None) -> Any:
     executable = ensure_higgsfield_cli()
+    env = load_local_env()
     completed = subprocess.run(
         [executable, *args],
         check=False,
         capture_output=True,
         text=True,
         timeout=timeout_sec,
-        env=load_local_env(),
+        env=env,
     )
     if completed.returncode != 0:
         message = (completed.stderr or completed.stdout).strip()
