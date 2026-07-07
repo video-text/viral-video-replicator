@@ -10,7 +10,7 @@ description: Generate TikTok-style ecommerce video clips through the local APIMa
 
 - Uses **APIMart** (`HIGGSFIELD_API_KEY` in project `.env`), not CreatOK.
 - Ask for confirmation before paid generation unless user passed `--yes`.
-- Follow `../references/common-rules.md`.
+- Follow `references/generate_rules.md`.
 
 ## Default models
 

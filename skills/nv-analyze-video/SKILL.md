@@ -10,7 +10,9 @@ description: Analyze a local TikTok/Douyin/reference video with ffmpeg, produce 
 
 - Input is a **local video file** (`.mp4`, `.mov`, etc.), not a remote CreatOK API.
 - Optional `.srt` or plain transcript file improves script accuracy.
-- Follow `../references/common-rules.md` and `../references/storyboard_templates.md`.
+- Follow `references/analyze_output.md` for the user-facing analyze format.
+- Follow `references/common-rules.md` for handoff rules.
+- For recreation/compliance/prompt rules, read `../nv-recreate-video/references/` only after analyze is done.
 - Final user-facing language should match the user's input language.
 
 ## Runtime
