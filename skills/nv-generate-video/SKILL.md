@@ -1,7 +1,7 @@
 ---
 name: nv-generate-video
-version: "1.1.0"
-description: Generate TikTok-style ecommerce video clips through Higgsfield Cloud models by default, with APIMart as an optional legacy provider. Use after nv-recreate-video produces shot prompts, or when the user asks to turn an approved script into video.
+version: "1.2.0"
+description: Generate TikTok-style ecommerce video clips through Higgsfield Cloud models by default, with APIMart as an optional legacy provider, and burn one-word captions in post for exact-remix workflows.
 ---
 
 # generate-video (Higgsfield Cloud)
@@ -57,6 +57,15 @@ Poll existing task:
 python scripts/run.py --run_id <id> --task_id <task_id> [--provider higgsfield] [--wait]
 ```
 
+Burn one-word captions after generation:
+
+```bash
+python scripts/burn_word_captions.py \
+  --input_video <clean_generated.mp4> \
+  --timeline_csv <caption_timeline.csv> \
+  --output_video <captioned_generated.mp4>
+```
+
 Legacy APIMart example:
 
 ```bash
@@ -85,6 +94,7 @@ Each shot prompt should include:
 - scene, subject, camera move, lighting
 - product stability language when product appears
 - negative: watermark, distorted product, unreadable text, copied identity
+- exact-remix shots must say: `Do not generate any on-screen text or subtitles. Captions will be added in post.`
 
 For Higgsfield models with two refs, keep role binding in the prompt: first image is the person/scene start frame, second image is the product/end frame when the selected model supports it.
 

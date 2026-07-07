@@ -86,6 +86,41 @@ python skills/nv-generate-video/scripts/run.py \
   --yes
 ```
 
+## Exact Remix Workflow
+
+Use this when the goal is to match the reference scene/camera/caption rhythm as closely as possible and replace only character/product.
+
+```bash
+# 1. Dense-frame reference analysis
+python skills/nv-analyze-video/scripts/run.py \
+  --video_path /path/to/ref.mp4 \
+  --run_id exact-001 \
+  --exact_remix \
+  --exact_fps 4
+
+# 2. Fill burned-in words in:
+# skills/nv-analyze-video/.artifacts/exact-001/outputs/caption_timeline_template.csv
+
+# 3. Generate clean video with prompts that say:
+# Do not generate any on-screen text or subtitles. Captions will be added in post.
+
+# 4. Burn one-word captions onto the clean generated clip
+python skills/nv-generate-video/scripts/burn_word_captions.py \
+  --input_video /path/to/clean_generated.mp4 \
+  --timeline_csv /path/to/caption_timeline.csv \
+  --output_video /path/to/captioned_generated.mp4
+```
+
+For one-off tests, captions can also be supplied directly:
+
+```bash
+python skills/nv-generate-video/scripts/burn_word_captions.py \
+  --input_video /path/to/clean_generated.mp4 \
+  --words "IF TOP OF YOUR HEAD IS STARTING TO LOOK LIKE THIS" \
+  --word_duration 0.25 \
+  --output_video /path/to/captioned_generated.mp4
+```
+
 ## Repo Layout
 
 ```text

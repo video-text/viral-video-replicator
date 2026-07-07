@@ -76,6 +76,27 @@ def extract_frames(video_path: Path, frames_dir: Path, interval: float = 1.0) ->
     return sorted(frames_dir.glob("frame_*.jpg"))
 
 
+def extract_frames_at_fps(video_path: Path, frames_dir: Path, fps: float) -> list[Path]:
+    frames_dir.mkdir(parents=True, exist_ok=True)
+    pattern = frames_dir / "frame_%05d.jpg"
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-i",
+            str(video_path),
+            "-vf",
+            f"fps={fps}",
+            str(pattern),
+        ],
+        check=True,
+    )
+    return sorted(frames_dir.glob("frame_*.jpg"))
+
+
 def build_contact_sheet(frame_paths: list[Path], output_path: Path, cols: int = 3) -> None:
     if not frame_paths:
         return
@@ -102,6 +123,75 @@ def build_contact_sheet(frame_paths: list[Path], output_path: Path, cols: int = 
         ],
         check=True,
     )
+
+
+def build_exact_remix_assets(
+    *,
+    artifacts,
+    video_path: Path,
+    duration: float,
+    fps: float,
+) -> dict:
+    exact_dir = artifacts.root / "vision" / "exact_frames"
+    frame_paths = extract_frames_at_fps(video_path, exact_dir, fps=fps)
+    frame_records = []
+    for index, frame_path in enumerate(frame_paths, start=1):
+        timestamp = round((index - 1) / fps, 3)
+        if timestamp > duration:
+            timestamp = round(duration, 3)
+        frame_records.append(
+            {
+                "index": index,
+                "time": timestamp,
+                "frame_path": str(frame_path),
+                "visible_caption": "",
+                "caption_position": "center-lower",
+                "composition_notes": "",
+                "camera_notes": "",
+            }
+        )
+
+    sheets_dir = artifacts.root / "vision" / "exact_sheets"
+    sheets_dir.mkdir(parents=True, exist_ok=True)
+    sheet_paths = []
+    chunk_size = 25
+    for chunk_index in range(0, len(frame_paths), chunk_size):
+        chunk = frame_paths[chunk_index : chunk_index + chunk_size]
+        if not chunk:
+            continue
+        sheet_path = sheets_dir / f"sheet_{chunk_index // chunk_size + 1:03d}.jpg"
+        try:
+            build_contact_sheet(chunk, sheet_path, cols=5)
+            sheet_paths.append(str(sheet_path))
+        except subprocess.CalledProcessError:
+            continue
+
+    csv_lines = ["index,start,end,word,position,notes"]
+    frame_step = 1 / fps
+    for record in frame_records:
+        start = record["time"]
+        end = min(round(start + frame_step, 3), round(duration, 3))
+        csv_lines.append(f'{record["index"]},{start:.3f},{end:.3f},,center-lower,')
+    artifacts.write_text("outputs/caption_timeline_template.csv", "\n".join(csv_lines) + "\n")
+
+    manifest = {
+        "mode": "exact_remix",
+        "source_video": str(video_path.resolve()),
+        "duration": duration,
+        "fps": fps,
+        "frame_count": len(frame_records),
+        "frames": frame_records,
+        "contact_sheets": sheet_paths,
+        "caption_timeline_template": "outputs/caption_timeline_template.csv",
+        "rules": {
+            "do_not_generate_subtitles_in_video_model": True,
+            "burn_captions_in_post": True,
+            "one_word_caption_timing": "fill word column in caption_timeline_template.csv",
+            "visual_goal": "copy camera rhythm, framing, scale, color palette, and transition timing; replace character/product only",
+        },
+    }
+    artifacts.write_json("outputs/exact_remix_manifest.json", manifest)
+    return manifest
 
 
 def parse_srt(path: Path) -> list[dict]:
@@ -200,6 +290,8 @@ def run_analyze_video(
     transcript_path: Path | None = None,
     platform: str = "local",
     source_url: str | None = None,
+    exact_remix: bool = False,
+    exact_fps: float = 4.0,
 ) -> dict:
     if not video_path.exists():
         raise FileNotFoundError(f"Video not found: {video_path}")
@@ -228,6 +320,14 @@ def run_analyze_video(
             segments = parse_plain_transcript(transcript_path, duration)
 
     scenes = build_scenes(duration, segments, frame_paths)
+    exact_manifest = None
+    if exact_remix:
+        exact_manifest = build_exact_remix_assets(
+            artifacts=artifacts,
+            video_path=video_path,
+            duration=duration,
+            fps=exact_fps,
+        )
 
     artifacts.write_json(
         "input/video_details.json",
@@ -266,10 +366,13 @@ def run_analyze_video(
         },
         "vision": {
             "scenes": scenes,
+            "exact_remix": exact_manifest,
             "files": {
                 "json": "vision/vision.json",
                 "cover": "vision/cover.jpg",
                 "contact_sheet": "vision/contact_sheet.jpg" if contact_sheet_path else None,
+                "exact_remix_manifest": "outputs/exact_remix_manifest.json" if exact_manifest else None,
+                "caption_timeline_template": "outputs/caption_timeline_template.csv" if exact_manifest else None,
             },
         },
         "response": {

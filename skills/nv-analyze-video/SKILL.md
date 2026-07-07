@@ -1,7 +1,7 @@
 ---
 name: nv-analyze-video
-version: "1.0.0"
-description: Analyze a local TikTok/Douyin/reference video with ffmpeg, produce transcript + scene artifacts, and output a creator-friendly script and storyboard table. Use when the user uploads a reference video or asks to break down a selling video structure.
+version: "1.1.0"
+description: Analyze a local TikTok/Douyin/reference video with ffmpeg, produce transcript, scene artifacts, and optional dense-frame exact-remix assets for burned-in caption replication.
 ---
 
 # analyze-video (local)
@@ -19,6 +19,12 @@ description: Analyze a local TikTok/Douyin/reference video with ffmpeg, produce 
 
 ```bash
 python scripts/run.py --video_path <abs_path> --run_id <id> [--transcript_path <srt_or_txt>] [--source_url <url>]
+```
+
+Exact remix mode:
+
+```bash
+python scripts/run.py --video_path <abs_path> --run_id <id> --exact_remix --exact_fps 4
 ```
 
 Then read `.artifacts/<run_id>/outputs/result.json`.
@@ -53,6 +59,8 @@ Infer video type internally (selling pitch, pain-solution, demo, before/after, r
   vision/cover.jpg
   vision/frames/
   outputs/result.json
+  outputs/exact_remix_manifest.json       # when --exact_remix is used
+  outputs/caption_timeline_template.csv   # when --exact_remix is used
 ```
 
 ## Notes

@@ -22,6 +22,8 @@ def main() -> int:
     parser.add_argument("--transcript_path", help="Optional .srt or plain transcript")
     parser.add_argument("--source_url", help="Optional original TikTok/Douyin URL")
     parser.add_argument("--platform", default="local", help="Platform label")
+    parser.add_argument("--exact_remix", action="store_true", help="Extract dense frames for exact visual/caption remix")
+    parser.add_argument("--exact_fps", type=float, default=4.0, help="Frame sampling rate for --exact_remix")
     args = parser.parse_args()
 
     result = run_analyze_video(
@@ -31,6 +33,8 @@ def main() -> int:
         transcript_path=Path(args.transcript_path) if args.transcript_path else None,
         platform=args.platform,
         source_url=args.source_url,
+        exact_remix=args.exact_remix,
+        exact_fps=args.exact_fps,
     )
     print(json.dumps({"ok": True, **result}, ensure_ascii=False))
     return 0
