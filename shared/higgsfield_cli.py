@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -10,6 +11,37 @@ from typing import Any
 
 from apimart_client import download_file
 from capabilities import VideoModel
+
+
+ENV_KEYS = {
+    "HF_KEY",
+    "HF_API_KEY",
+    "HF_API_SECRET",
+    "HIGGSFIELD_API_KEY",
+    "HIGGSFIELD_API_SECRET",
+}
+
+
+def load_local_env() -> dict[str, str]:
+    env = os.environ.copy()
+    candidates = [
+        Path.cwd() / ".env",
+        Path(__file__).resolve().parents[1] / ".env",
+    ]
+    for env_path in candidates:
+        if not env_path.exists():
+            continue
+        for line in env_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            if key in ENV_KEYS and key not in env:
+                env[key] = value.strip().strip('"').strip("'")
+    if "HF_KEY" not in env and env.get("HIGGSFIELD_API_KEY") and env.get("HIGGSFIELD_API_SECRET"):
+        env["HF_KEY"] = f"{env['HIGGSFIELD_API_KEY']}:{env['HIGGSFIELD_API_SECRET']}"
+    return env
 
 
 def ensure_higgsfield_cli() -> str:
@@ -77,6 +109,7 @@ def _run_json(args: list[str], timeout_sec: int | None = None) -> Any:
         capture_output=True,
         text=True,
         timeout=timeout_sec,
+        env=load_local_env(),
     )
     if completed.returncode != 0:
         message = (completed.stderr or completed.stdout).strip()
