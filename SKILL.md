@@ -1,4 +1,4 @@
----
+﻿---
 name: viral-video-replicator
 description: analyzes uploaded tiktok, douyin, or short-form ai ecommerce videos and turns them into concise, safe, original recreation plans. use when the user wants to reverse-engineer a viral product video, make the first three seconds structurally similar, bind a product image with labels such as @产品图, replace the product or actor with their own images, and output compact storyboard tables plus model-ready prompts for kling, seedance, happyhorse, wan, doubao, or similar video models.
 ---

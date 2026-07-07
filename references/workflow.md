@@ -1,4 +1,4 @@
-# Viral ecommerce video recreation workflow
+﻿# Viral ecommerce video recreation workflow
 
 ## 1. Reference intake
 

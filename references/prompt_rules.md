@@ -1,4 +1,4 @@
-# Prompt rules for video models
+﻿# Prompt rules for video models
 
 ## Product and media role binding
 

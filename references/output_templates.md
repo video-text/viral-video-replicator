@@ -1,4 +1,4 @@
-# Optimized output templates
+﻿# Optimized output templates
 
 Keep the final answer execution-oriented. Avoid long analysis once the reference has been understood. Default to 5-6 shots for 15-20 seconds unless the user explicitly asks for more detail.
 

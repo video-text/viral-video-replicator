@@ -1,4 +1,4 @@
-# Standard input template
+﻿# Standard input template
 
 Use this template when the user wants a stable viral video recreation workflow.
 

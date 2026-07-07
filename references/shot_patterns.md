@@ -1,4 +1,4 @@
-# Viral ecommerce shot patterns
+﻿# Viral ecommerce shot patterns
 
 Use these patterns to classify and recreate reference videos.
 
