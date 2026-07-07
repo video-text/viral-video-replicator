@@ -93,6 +93,8 @@ Use this when the goal is to match the reference scene/camera/caption rhythm as 
 Exact remix rules:
 
 - write prompts to the selected model's supported durations
+- final output duration must match the reference video duration; do not shorten a 43s reference to 40s unless explicitly requested
+- split long references into model-native clips, then trim/concatenate so the final assembly equals the reference duration
 - for `seedance_2_0`, use 4s minimum; make `0.0-3.0s` match the reference and `3.0-4.0s` an editing handle when adapting a 3s hook
 - if the uploaded product does not match the reference product category/role, preserve the reference character archetype and action rhythm more tightly
 - if product role matches, character can be lightly varied

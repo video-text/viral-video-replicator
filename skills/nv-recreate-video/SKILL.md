@@ -12,6 +12,7 @@ This skill replaces the standalone `viral-video-replicator` skill. All original 
 
 - Replicate structure, pacing, hook mechanism, and camera logic, especially the first 3 seconds.
 - For exact-remix requests, use dense frame analysis and post-production captions instead of asking the video model to render subtitles.
+- For exact-remix requests, the final assembled duration must match the uploaded reference video duration; split into model-native clips internally, then trim/concatenate back to the reference duration.
 - Must not copy watermark, music, creator identity, original product, or protected exact captions when adapting to a new product/language.
 - `@reference video` / local video = structure, rhythm, camera, caption timing reference.
 - `@product image` = visual product reference.

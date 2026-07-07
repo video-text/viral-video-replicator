@@ -75,10 +75,26 @@ Examples:
 - `veo3_1`: use 4 / 6 / 8 only.
 - `gemini_omni`: use 4 / 6 / 8 / 10 only.
 
-For long-form remix, preserve the reference duration at the closest model-friendly plan:
+For long-form exact remix, the final output duration must match the reference video duration.
 
-- a 42-43s reference should become about 40s or 44s from multiple model-native clips, not one unsupported long request.
-- prefer more short clips for batch editing: 4s Seedance clips or 3-5s Kling clips.
+- If the reference is 42.214s, the final captioned remix should be 42.214s, or the same rounded delivery duration when the export format requires frame rounding.
+- Do not shorten a 43s reference to 40s unless the user explicitly asks for a shorter edit.
+- Because video models do not support arbitrary 43s single requests, split the reference timeline into model-native clips, then trim/extend edit handles and concatenate to match the original total duration.
+- Segment durations may be model-native values such as 4s, 5s, 6s, 8s, 10s, 12s, or 15s, but every segment must map back to an exact reference time range.
+- Each segment prompt should state both the generated segment duration and the reference time range it covers.
+- For batch editing, you may generate extra alternate takes, but the primary reconstruction timeline must preserve the reference duration.
+
+Example for a 42.214s reference:
+
+```text
+Reference duration: 42.214s.
+Primary reconstruction target: 42.214s.
+Plan:
+- Clip 01: generate 4s, covers reference 0.000-3.000, trim final 1s handle if needed.
+- Clip 02: generate 5s, covers reference 3.000-8.000.
+- ...
+- Final assembly: concatenate trimmed clips and force final duration to 42.214s.
+```
 
 ## Product / Character Consistency Rule
 

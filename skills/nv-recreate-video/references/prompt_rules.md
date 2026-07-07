@@ -78,7 +78,7 @@ Use the provided person image as the character reference for general face, hairs
 
 Use concise, action-oriented prompts. One action and one camera move per shot.
 
-Use model-native durations. Seedance 2.0 has a 4s minimum in this project: for a 3s reference hook, write the prompt as 4s with the first 3s matching the reference and the final second as an editing handle, or choose a 3s-capable Kling model.
+Use model-native durations for each generated segment, but preserve the uploaded reference video's total duration in the final assembly. Seedance 2.0 has a 4s minimum in this project: for a 3s reference hook, write the prompt as 4s with the first 3s matching the reference and the final second as an editing handle, or choose a 3s-capable Kling model. For a 42.214s reference, the final assembled remix should also be 42.214s after trimming/concatenation.
 
 ```text
 Vertical 9:16 realistic smartphone ecommerce video, 3 seconds. Use the product image as exact product reference. A young adult in a bright bathroom holds the device against the neck, soft pink led glow, gentle mirror reflection. Camera starts at medium shot and slowly pushes in. Natural morning light, clean ugc skincare routine style. Product remains clearly visible and stable.
