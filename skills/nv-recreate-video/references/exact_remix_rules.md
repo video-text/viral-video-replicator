@@ -13,7 +13,7 @@ Copy the reference video's:
 - transition rhythm
 - burned-in caption timing and position
 
-Replace only:
+Replace only when appropriate:
 
 - character/person identity
 - user product
@@ -64,18 +64,66 @@ python skills/nv-generate-video/scripts/burn_word_captions.py \
   --output_video <captioned_generated.mp4>
 ```
 
+## Duration Rule
+
+The script must adapt to the selected model's native duration support. Do not ask a model for unsupported durations.
+
+Examples:
+
+- `seedance_2_0`: write 4s, 5s, 8s, 12s, or 15s style prompts. For a 3s reference hook, generate 4s with `0.0-3.0s match reference; 3.0-4.0s editing handle`, then trim in post if needed.
+- `kling3_0` / `kling3_0_turbo`: can be used for exact 3s hook attempts.
+- `veo3_1`: use 4 / 6 / 8 only.
+- `gemini_omni`: use 4 / 6 / 8 / 10 only.
+
+For long-form remix, preserve the reference duration at the closest model-friendly plan:
+
+- a 42-43s reference should become about 40s or 44s from multiple model-native clips, not one unsupported long request.
+- prefer more short clips for batch editing: 4s Seedance clips or 3-5s Kling clips.
+
+## Product / Character Consistency Rule
+
+Before writing exact-remix prompts, decide whether the user product is visually consistent with the reference product.
+
+Use these checks:
+
+- same product category
+- same packaging silhouette
+- same usage mode
+- same scene logic
+- same prop role in the story
+
+If the uploaded product is **not consistent** with the reference product:
+
+- do not change the reference character type aggressively
+- preserve the same character archetype, camera staging, pose rhythm, and action logic
+- replace the product role only where it naturally appears
+- keep a generic, non-identical version of the reference character style; do not copy watermark, creator identity, or exact proprietary assets
+
+If the uploaded product **is consistent** with the reference product:
+
+- product can be swapped more directly
+- the character may be lightly varied
+- camera, action, color palette, and caption rhythm should remain almost unchanged
+
+For the skeleton-style reference:
+
+- if the user's product differs from the original spray/product category, keep a generic skeleton-like mascot/character archetype and the same action rhythm
+- change only enough details to avoid direct character copying
+- do not switch to an unrelated realistic human unless the user explicitly asks for a looser adaptation
+
 ## Prompt Shape
 
 For exact remix, prompts should be camera-timeline first, not marketing-copy first:
 
 ```text
-Vertical 9:16 realistic video, no on-screen text. Match the reference timing:
+Vertical 9:16 realistic video, no on-screen text. Match the reference timing and model-native duration:
 0.0-0.4s dark green overhead wide shot, subject tiny and centered, fast zoom begins.
 0.4-0.8s overhead top of head grows larger, hand enters near hairline.
 0.8-1.4s tighter scalp/top-head shot, fingers part hair.
 1.4-2.2s extreme overhead scalp close-up, same screen position and zoom speed.
 2.2-3.0s hard cut to shower medium shot, subject washing hair.
-Replace the original character with a generic adult. Do not copy skeleton character, watermark, original captions, music, or original brand.
+3.0-4.0s editing handle if the selected model requires 4 seconds.
+Keep a generic skeleton-like character archetype when product mismatch requires preserving reference role continuity. Do not copy watermark, creator identity, original captions, music, or original brand.
 ```
 
 ## Caption Rule

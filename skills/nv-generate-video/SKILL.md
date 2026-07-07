@@ -17,9 +17,9 @@ description: Generate TikTok-style ecommerce video clips through Higgsfield Clou
 
 | Use case | Model | Duration |
 |----------|-------|----------|
-| default ecommerce / UGC | `seedance_2_0` | 5 |
+| default ecommerce / UGC | `seedance_2_0` | 4-15 |
 | product hero / cinematic | `kling3_0` | 5-15 |
-| fast product broll | `kling3_0_turbo` | 5 |
+| 3s hook / fast product broll | `kling3_0_turbo` | 3-15 |
 | detail broll | `wan2_7` | 5 |
 | audio/video native | `gemini_omni` | 8 |
 | premium physics | `veo3_1` | 4-8 |
@@ -95,6 +95,8 @@ Each shot prompt should include:
 - product stability language when product appears
 - negative: watermark, distorted product, unreadable text, copied identity
 - exact-remix shots must say: `Do not generate any on-screen text or subtitles. Captions will be added in post.`
+
+Duration must follow model capabilities. Do not ask Seedance 2.0 for 3s. For a 3s reference hook with Seedance, write a 4s prompt where `0.0-3.0s` matches the reference and `3.0-4.0s` is an editing handle, then trim in post if needed. For native 3s hooks, prefer `kling3_0` or `kling3_0_turbo`.
 
 For Higgsfield models with two refs, keep role binding in the prompt: first image is the person/scene start frame, second image is the product/end frame when the selected model supports it.
 

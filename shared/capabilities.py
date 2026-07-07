@@ -167,7 +167,10 @@ def resolve_video_request(
     if selected.duration_enum and final_seconds not in selected.duration_enum:
         raise ValueError(f"Model {model_id} requires duration in {selected.duration_enum}")
     if selected.duration_min is not None and final_seconds < selected.duration_min:
-        raise ValueError(f"Model {model_id} requires duration >= {selected.duration_min}s")
+        hint = ""
+        if model_id.startswith("seedance") and final_seconds == 3:
+            hint = " Use 4s with a 3s reference match plus 1s editing handle, or choose kling3_0/kling3_0_turbo for a 3s hook."
+        raise ValueError(f"Model {model_id} requires duration >= {selected.duration_min}s.{hint}")
     if selected.duration_max is not None and final_seconds > selected.duration_max:
         raise ValueError(f"Model {model_id} supports max duration {selected.duration_max}s")
 

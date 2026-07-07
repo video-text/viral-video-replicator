@@ -33,6 +33,16 @@ If the platform supports labels such as `@产品图`, `@参考视频`, or `@人�
 
 `@产品图` helps as an input marker, but it is not enough by itself. Always pair it with product name, visual constraints, allowed claims, and forbidden claims.
 
+## Exact remix product/character decision
+
+When the user asks for exact replication, first decide whether the uploaded product is visually consistent with the product in the reference video.
+
+If product category, packaging silhouette, usage mode, or scene role do not match, preserve the reference character archetype and action logic more tightly. For example, a skeleton-mascot hair-loss reference should remain a generic skeleton-like mascot if the new product is a different shampoo/product category; do not suddenly switch to a realistic human unless the user requests a loose adaptation.
+
+If the uploaded product is consistent with the reference product, the character can be lightly varied while keeping camera timing, pose rhythm, color palette, and caption cadence nearly identical.
+
+Always avoid copying creator identity, watermark, exact proprietary character design, exact subtitles, music, or original brand marks.
+
 ## Universal prompt requirements
 
 Every prompt should include:
@@ -67,6 +77,8 @@ Use the provided person image as the character reference for general face, hairs
 ## Kling / Seedance style
 
 Use concise, action-oriented prompts. One action and one camera move per shot.
+
+Use model-native durations. Seedance 2.0 has a 4s minimum in this project: for a 3s reference hook, write the prompt as 4s with the first 3s matching the reference and the final second as an editing handle, or choose a 3s-capable Kling model.
 
 ```text
 Vertical 9:16 realistic smartphone ecommerce video, 3 seconds. Use the product image as exact product reference. A young adult in a bright bathroom holds the device against the neck, soft pink led glow, gentle mirror reflection. Camera starts at medium shot and slowly pushes in. Natural morning light, clean ugc skincare routine style. Product remains clearly visible and stable.

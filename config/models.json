@@ -10,7 +10,7 @@
       "default_definition": "720p",
       "orientations": ["auto", "16:9", "9:16", "4:3", "3:4", "1:1", "21:9"],
       "definitions": ["480p", "720p", "1080p", "4k"],
-      "duration_min": 3,
+      "duration_min": 4,
       "duration_max": 15,
       "max_reference_images": 9,
       "cli_reference_flag": "image",
@@ -19,6 +19,43 @@
         "mode": "std",
         "bitrate_mode": "high",
         "genre": "auto",
+        "generate_audio": false
+      }
+    },
+    {
+      "id": "seedance_2_0_mini",
+      "label": "Seedance 2.0 Mini",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 5,
+      "default_definition": "720p",
+      "orientations": ["auto", "16:9", "9:16", "4:3", "3:4", "1:1", "21:9"],
+      "definitions": ["480p", "720p", "1080p"],
+      "duration_min": 4,
+      "duration_max": 15,
+      "max_reference_images": 9,
+      "cli_reference_flag": "image",
+      "cli_definition_flag": "resolution",
+      "cli_extra_args": {
+        "mode": "std",
+        "bitrate_mode": "high",
+        "generate_audio": false
+      }
+    },
+    {
+      "id": "seedance1_5",
+      "label": "Seedance 1.5 Pro",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 4,
+      "default_definition": "720p",
+      "orientations": ["auto", "16:9", "9:16", "4:3", "3:4", "1:1", "21:9"],
+      "definitions": ["480p", "720p", "1080p"],
+      "duration_enum": [4, 8, 12],
+      "max_reference_images": 2,
+      "cli_reference_flag": "start-image",
+      "cli_definition_flag": "resolution",
+      "cli_extra_args": {
         "generate_audio": false
       }
     },
@@ -57,6 +94,23 @@
       "cli_definition_flag": "resolution"
     },
     {
+      "id": "kling2_6",
+      "label": "Kling 2.6 Video",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 5,
+      "default_definition": "720p",
+      "orientations": ["16:9", "9:16", "1:1"],
+      "definitions": ["720p"],
+      "duration_enum": [5, 10],
+      "max_reference_images": 1,
+      "cli_reference_flag": "start-image",
+      "cli_definition_flag": null,
+      "cli_extra_args": {
+        "sound": "off"
+      }
+    },
+    {
       "id": "wan2_7",
       "label": "Wan 2.7",
       "provider": "higgsfield",
@@ -69,6 +123,20 @@
       "duration_max": 15,
       "max_reference_images": 2,
       "cli_reference_flag": "start-image",
+      "cli_definition_flag": "resolution"
+    },
+    {
+      "id": "wan2_6",
+      "label": "Wan 2.6 Video",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 5,
+      "default_definition": "720p",
+      "orientations": ["16:9", "9:16", "1:1"],
+      "definitions": ["720p", "1080p"],
+      "duration_enum": [5, 10, 15],
+      "max_reference_images": 4,
+      "cli_reference_flag": "image",
       "cli_definition_flag": "resolution"
     },
     {
@@ -101,6 +169,52 @@
       "cli_extra_args": {
         "variant": "veo-3-1-fast"
       }
+    },
+    {
+      "id": "veo3_1_lite",
+      "label": "Google Veo 3.1 Lite",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 8,
+      "default_definition": "basic",
+      "orientations": ["auto", "16:9", "9:16"],
+      "definitions": ["basic", "high", "ultra"],
+      "duration_enum": [4, 6, 8],
+      "max_reference_images": 2,
+      "cli_reference_flag": "start-image",
+      "cli_definition_flag": "quality",
+      "cli_extra_args": {
+        "generate_audio": false
+      }
+    },
+    {
+      "id": "minimax_hailuo",
+      "label": "Minimax Hailuo",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 6,
+      "default_definition": "768",
+      "orientations": ["9:16", "16:9", "1:1"],
+      "definitions": ["512", "768", "1080"],
+      "duration_enum": [6, 10],
+      "max_reference_images": 2,
+      "cli_reference_flag": "start-image",
+      "cli_definition_flag": "resolution"
+    },
+    {
+      "id": "grok_video_v15",
+      "label": "Grok Video 1.5",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 5,
+      "default_definition": "720p",
+      "orientations": ["9:16", "16:9", "1:1"],
+      "definitions": ["480p", "720p"],
+      "duration_min": 2,
+      "duration_max": 15,
+      "max_reference_images": 1,
+      "cli_reference_flag": "start-image",
+      "cli_definition_flag": "resolution"
     },
     {
       "id": "doubao-seedance-1-0-pro-fast",
