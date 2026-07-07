@@ -1,14 +1,15 @@
 ---
 name: nv-generate-video
-version: "1.0.0"
-description: Generate TikTok-style ecommerce video clips through the local APIMart pipeline (Kling, Doubao Seedance, HappyHorse, etc.). Use after nv-recreate-video produces shot prompts, or when the user asks to turn an approved script into video.
+version: "1.1.0"
+description: Generate TikTok-style ecommerce video clips through Higgsfield Cloud models by default, with APIMart as an optional legacy provider. Use after nv-recreate-video produces shot prompts, or when the user asks to turn an approved script into video.
 ---
 
-# generate-video (local APIMart)
+# generate-video (Higgsfield Cloud)
 
 ## Constraints
 
-- Uses **APIMart** (`HIGGSFIELD_API_KEY` in project `.env`), not CreatOK.
+- Uses **Higgsfield CLI / Cloud** by default (`higgsfield auth login`), not CreatOK.
+- APIMart remains available with `--provider apimart` and `HIGGSFIELD_API_KEY`.
 - Ask for confirmation before paid generation unless user passed `--yes`.
 - Follow `references/generate_rules.md`.
 
@@ -16,12 +17,14 @@ description: Generate TikTok-style ecommerce video clips through the local APIMa
 
 | Use case | Model | Duration |
 |----------|-------|----------|
-| 3s hook | `doubao-seedance-1-0-pro-fast` | 3 |
-| product hero / multi-shot | `kling-v3-omni` | 5-15 |
-| product-only broll | `kling-v3` | 5 |
-| detail broll | `happyhorse-1.0` | 5 |
+| default ecommerce / UGC | `seedance_2_0` | 5 |
+| product hero / cinematic | `kling3_0` | 5-15 |
+| fast product broll | `kling3_0_turbo` | 5 |
+| detail broll | `wan2_7` | 5 |
+| audio/video native | `gemini_omni` | 8 |
+| premium physics | `veo3_1` | 4-8 |
 
-Models and hook defaults also load from `config/hybrid_remix.json`.
+Models load from `config/models.json`.
 
 ## Runtime
 
@@ -31,24 +34,37 @@ Submit new generation:
 python scripts/run.py \
   --run_id <id> \
   --prompt "<english prompt>" \
-  [--model doubao-seedance-1-0-pro-fast] \
+  [--provider higgsfield] \
+  [--model seedance_2_0] \
   [--orientation 9:16] \
-  [--seconds 3] \
-  [--definition 480p] \
-  [--reference_images d:/path/renwu.png,d:/path/chanpin.png] \
+  [--seconds 5] \
+  [--definition 720p] \
+  [--reference_images d:/path/person.png,d:/path/product.png] \
   [--yes]
 ```
 
 Poll existing task:
 
 ```bash
-python scripts/run.py --run_id <id> --task_id <task_id> [--wait]
+python scripts/run.py --run_id <id> --task_id <task_id> [--provider higgsfield] [--wait]
+```
+
+Legacy APIMart example:
+
+```bash
+python scripts/run.py \
+  --provider apimart \
+  --run_id <id> \
+  --prompt "<english prompt>" \
+  --model doubao-seedance-1-0-pro-fast \
+  --seconds 3 \
+  --yes
 ```
 
 ## Workflow
 
 1. Resolve model/duration from recreate shot prompt or user request.
-2. Upload reference images when `@产品图` / `@人物图` are available.
+2. Pass reference images to Higgsfield CLI when product/person images are available.
 3. Confirm with user unless they already approved.
 4. Run script, poll task, download `outputs/generated.mp4`.
 5. Report `task_id`, `video_url`, and local path.
@@ -62,11 +78,11 @@ Each shot prompt should include:
 - product stability language when product appears
 - negative: watermark, distorted product, unreadable text, copied identity
 
-For Kling Omni with two refs, use `<<<image_1>>>` person and `<<<image_2>>>` product in prompt when appropriate.
+For Higgsfield models with two refs, keep role binding in the prompt: first image is the person/scene start frame, second image is the product/end frame when the selected model supports it.
 
 ## Artifacts
 
-```
+```text
 .artifacts/<run_id>/outputs/result.json
 .artifacts/<run_id>/outputs/result.md
 .artifacts/<run_id>/outputs/generated.mp4
@@ -76,10 +92,12 @@ For Kling Omni with two refs, use `<<<image_1>>>` person and `<<<image_2>>>` pro
 
 For hook + body splice, subtitles, and voiceover, hand off to project scripts:
 
-- `scripts/hybrid_remix.py` — splice, subtitles, round1 builds
-- `scripts/elevenlabs_tts.py` — voiceover
+- `scripts/hybrid_remix.py` - splice, subtitles, round1 builds
+- `scripts/elevenlabs_tts.py` - voiceover
 
 ## Errors
 
-- Missing API key → check `.env` / `HIGGSFIELD_API_KEY`
-- Unsupported model/duration → see `skill/_shared/capabilities.py`
+- Missing Higgsfield CLI -> install `npm install -g @higgsfield/cli`
+- Not authenticated -> run `higgsfield auth login`
+- APIMart auth errors -> check `.env` / `HIGGSFIELD_API_KEY`
+- Unsupported model/duration -> see `config/models.json` and `shared/capabilities.py`

@@ -1,0 +1,155 @@
+{
+  "default_provider": "higgsfield",
+  "models": [
+    {
+      "id": "seedance_2_0",
+      "label": "Seedance 2.0",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 5,
+      "default_definition": "720p",
+      "orientations": ["auto", "16:9", "9:16", "4:3", "3:4", "1:1", "21:9"],
+      "definitions": ["480p", "720p", "1080p", "4k"],
+      "duration_min": 3,
+      "duration_max": 15,
+      "max_reference_images": 9,
+      "cli_reference_flag": "image",
+      "cli_definition_flag": "resolution",
+      "cli_extra_args": {
+        "mode": "std",
+        "bitrate_mode": "high",
+        "genre": "auto",
+        "generate_audio": false
+      }
+    },
+    {
+      "id": "kling3_0",
+      "label": "Kling v3.0",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 5,
+      "default_definition": "720p",
+      "orientations": ["16:9", "9:16", "1:1"],
+      "definitions": ["720p"],
+      "duration_min": 3,
+      "duration_max": 15,
+      "max_reference_images": 2,
+      "cli_reference_flag": "start-image",
+      "cli_definition_flag": null,
+      "cli_extra_args": {
+        "mode": "std",
+        "sound": "off"
+      }
+    },
+    {
+      "id": "kling3_0_turbo",
+      "label": "Kling 3.0 Turbo",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 5,
+      "default_definition": "720p",
+      "orientations": ["16:9", "9:16", "1:1"],
+      "definitions": ["720p", "1080p"],
+      "duration_min": 3,
+      "duration_max": 15,
+      "max_reference_images": 1,
+      "cli_reference_flag": "start-image",
+      "cli_definition_flag": "resolution"
+    },
+    {
+      "id": "wan2_7",
+      "label": "Wan 2.7",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 5,
+      "default_definition": "720p",
+      "orientations": ["16:9", "9:16", "1:1", "4:3", "3:4"],
+      "definitions": ["720p", "1080p"],
+      "duration_min": 3,
+      "duration_max": 15,
+      "max_reference_images": 2,
+      "cli_reference_flag": "start-image",
+      "cli_definition_flag": "resolution"
+    },
+    {
+      "id": "gemini_omni",
+      "label": "Gemini Omni Flash",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 8,
+      "default_definition": "720p",
+      "orientations": ["16:9", "9:16"],
+      "definitions": ["720p"],
+      "duration_enum": [4, 6, 8, 10],
+      "max_reference_images": 7,
+      "cli_reference_flag": "image",
+      "cli_definition_flag": "resolution"
+    },
+    {
+      "id": "veo3_1",
+      "label": "Google Veo 3.1",
+      "provider": "higgsfield",
+      "default_orientation": "9:16",
+      "default_seconds": 8,
+      "default_definition": "basic",
+      "orientations": ["16:9", "9:16"],
+      "definitions": ["basic", "high", "ultra"],
+      "duration_enum": [4, 6, 8],
+      "max_reference_images": 1,
+      "cli_reference_flag": "start-image",
+      "cli_definition_flag": "quality",
+      "cli_extra_args": {
+        "variant": "veo-3-1-fast"
+      }
+    },
+    {
+      "id": "doubao-seedance-1-0-pro-fast",
+      "label": "Doubao Seedance Fast",
+      "provider": "apimart",
+      "default_orientation": "9:16",
+      "default_seconds": 3,
+      "default_definition": "480p",
+      "orientations": ["9:16", "16:9"],
+      "definitions": ["480p", "720p"],
+      "duration_enum": [3, 5],
+      "max_reference_images": 1
+    },
+    {
+      "id": "kling-v3-omni",
+      "label": "Kling V3 Omni",
+      "provider": "apimart",
+      "default_orientation": "9:16",
+      "default_seconds": 15,
+      "default_definition": "720p",
+      "orientations": ["9:16", "16:9"],
+      "definitions": ["720p", "1080p"],
+      "duration_min": 5,
+      "duration_max": 15,
+      "max_reference_images": 2
+    },
+    {
+      "id": "kling-v3",
+      "label": "Kling V3",
+      "provider": "apimart",
+      "default_orientation": "9:16",
+      "default_seconds": 5,
+      "default_definition": "720p",
+      "orientations": ["9:16", "16:9"],
+      "definitions": ["720p", "1080p"],
+      "duration_enum": [5, 10],
+      "max_reference_images": 1
+    },
+    {
+      "id": "happyhorse-1.0",
+      "label": "HappyHorse 1.0",
+      "provider": "apimart",
+      "default_orientation": "9:16",
+      "default_seconds": 5,
+      "default_definition": "720p",
+      "orientations": ["9:16"],
+      "definitions": ["720p"],
+      "duration_enum": [5],
+      "max_reference_images": 0
+    }
+  ]
+}

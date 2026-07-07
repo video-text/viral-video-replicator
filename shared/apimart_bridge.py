@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .apimart_client import (
+from apimart_client import (
     download_file,
     extract_video_urls,
     get_task_status,

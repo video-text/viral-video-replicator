@@ -16,7 +16,8 @@ from generate_video import run_generate_video, run_generate_video_status  # noqa
 
 
 def confirm_generation(args: argparse.Namespace) -> bool:
-    print("About to generate video via APIMart.")
+    print(f"About to generate video via {args.provider or '(default provider)'}.")
+    print(f"- provider: {args.provider or '(default)'}")
     print(f"- model: {args.model or '(default)'}")
     print(f"- orientation: {args.orientation or '(default)'}")
     print(f"- seconds: {args.seconds or '(default)'}")
@@ -29,10 +30,11 @@ def confirm_generation(args: argparse.Namespace) -> bool:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Generate a video through APIMart")
+    parser = argparse.ArgumentParser(description="Generate a video through Higgsfield or APIMart")
     parser.add_argument("--run_id", required=True)
     parser.add_argument("--prompt")
     parser.add_argument("--task_id")
+    parser.add_argument("--provider", choices=["higgsfield", "apimart"])
     parser.add_argument("--model")
     parser.add_argument("--orientation")
     parser.add_argument("--seconds", type=int)
@@ -55,6 +57,7 @@ def main() -> int:
             task_id=args.task_id,
             run_id=args.run_id,
             skill_dir=SKILL_ROOT,
+            provider=args.provider,
             model=args.model,
             wait=args.wait,
             poll_interval=args.poll_interval,
@@ -72,6 +75,7 @@ def main() -> int:
         prompt=args.prompt,
         run_id=args.run_id,
         skill_dir=SKILL_ROOT,
+        provider=args.provider,
         model=args.model,
         orientation=args.orientation,
         seconds=args.seconds,

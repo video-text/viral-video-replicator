@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .repo_paths import REPO_ROOT
+from repo_paths import REPO_ROOT
 
 DEFAULT_MODELS_PATH = REPO_ROOT / "config" / "models.json"
 

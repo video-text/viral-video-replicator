@@ -8,6 +8,7 @@
 ## Prompt source
 
 Per-shot prompts should come from:
+
 - `../nv-recreate-video/references/prompt_rules.md`
 - the approved `Scene / Subject / Camera / Constraints` blocks in conversation
 
@@ -18,4 +19,6 @@ Per-shot prompts should come from:
 
 ## API errors
 
-- Missing `HIGGSFIELD_API_KEY`: tell the user to set it in `.env` or environment variables.
+- Missing Higgsfield CLI: install `npm install -g @higgsfield/cli`.
+- Not authenticated: run `higgsfield auth login`.
+- APIMart legacy mode: missing `HIGGSFIELD_API_KEY` means set it in `.env` or environment variables.

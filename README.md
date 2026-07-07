@@ -3,9 +3,11 @@
 Codex / Claude / OpenClaw skill pack for viral ecommerce video replication.
 
 Merged from:
-- **viral-video-replicator** (storyboard + prompt rules)
-- **creatok-skills** structure (analyze → recreate → generate chain)
-- **local APIMart pipeline** (Doubao / Kling / HappyHorse)
+
+- **viral-video-replicator** storyboard and prompt rules
+- **creatok-skills** analyze -> recreate -> generate chain
+- **Higgsfield Cloud generation**: Seedance 2.0, Kling 3.0, Wan 2.7, Veo 3.1
+- optional legacy **APIMart pipeline**: Doubao, Kling, HappyHorse
 
 ## Install for Codex
 
@@ -26,7 +28,20 @@ After install you should see:
 
 Restart Codex if skills do not appear immediately.
 
-## Configure API key
+## Configure Higgsfield
+
+Install and log in to the Higgsfield CLI:
+
+```bash
+npm install -g @higgsfield/cli
+higgsfield auth login
+```
+
+The default generation provider is `higgsfield` and the default model is `seedance_2_0`.
+
+## Optional APIMart Legacy Key
+
+Only needed when running `--provider apimart`:
 
 ```bash
 export HIGGSFIELD_API_KEY="your-apimart-key"
@@ -43,6 +58,7 @@ HIGGSFIELD_API_KEY=your-apimart-key
 - Python 3.10+
 - ffmpeg on PATH
 - `requests` (`pip install -r requirements.txt`)
+- Higgsfield CLI for default generation (`npm install -g @higgsfield/cli`)
 
 ## Workflow
 
@@ -64,26 +80,27 @@ python skills/nv-recreate-video/scripts/run.py \
 python skills/nv-generate-video/scripts/run.py \
   --run_id demo-001-shot01 \
   --prompt "Vertical 9:16 realistic UGC hook..." \
-  --model doubao-seedance-1-0-pro-fast \
-  --seconds 3 \
-  --reference_images /path/to/person.png \
+  --provider higgsfield \
+  --model seedance_2_0 \
+  --seconds 5 \
+  --reference_images /path/to/person.png,/path/to/product.png \
   --yes
 ```
 
-## Repo layout
+## Repo Layout
 
-```
+```text
 skills/
   nv-analyze-video/     # ffmpeg local analyze
-  nv-recreate-video/    # storyboard + prompt pack (merged viral-video-replicator)
-  nv-generate-video/    # APIMart generation
+  nv-recreate-video/    # storyboard + prompt pack
+  nv-generate-video/    # Higgsfield generation, APIMart legacy optional
 shared/                 # Python runtime shared by all skills
-references/             # shared contracts + templates
+config/models.json      # provider/model capabilities
 ```
 
-## Migration from standalone viral-video-replicator
+## Migration From Standalone viral-video-replicator
 
 The old single-skill install is now **`nv-recreate-video`**. Its `references/` folder contains all former `viral-video-replicator` docs (`input_template.md`, `compliance.md`, `prompt_rules.md`, etc.).
 
 Use the full chain for best results:
-`nv-analyze-video` → `nv-recreate-video` → `nv-generate-video`
+`nv-analyze-video` -> `nv-recreate-video` -> `nv-generate-video`
