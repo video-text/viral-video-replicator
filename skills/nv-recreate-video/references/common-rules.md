@@ -8,7 +8,7 @@
 
 ## API errors
 
-- Default generation uses Higgsfield CLI. If it is not authenticated, run `higgsfield auth login`.
+- Default generation uses Higgsfield CLI. If it is not set up, run `python skills/nv-generate-video/scripts/setup_higgsfield.py`.
 - If APIMart legacy mode returns auth errors, check `HIGGSFIELD_API_KEY` in project `.env`.
 - If ffmpeg is missing, tell the user to install ffmpeg and ensure it is on PATH.
 

@@ -28,6 +28,14 @@ Models load from `config/models.json`.
 
 ## Runtime
 
+One-time local setup:
+
+```bash
+python scripts/setup_higgsfield.py
+```
+
+This installs `~/.codex/bin/higgsfield.exe` if missing, starts browser login when needed, and automatically selects the only available Higgsfield workspace.
+
 Submit new generation:
 
 ```bash
@@ -97,7 +105,8 @@ For hook + body splice, subtitles, and voiceover, hand off to project scripts:
 
 ## Errors
 
-- Missing Higgsfield CLI -> install `npm install -g @higgsfield/cli`
-- Not authenticated -> run `higgsfield auth login`
+- Missing Higgsfield CLI -> run `python scripts/setup_higgsfield.py`
+- Not authenticated -> run `python scripts/setup_higgsfield.py`
+- No workspace selected -> generation auto-selects the only workspace; if multiple exist, select one manually with `higgsfield workspace set <id>`
 - APIMart auth errors -> check `.env` / `HIGGSFIELD_API_KEY`
 - Unsupported model/duration -> see `config/models.json` and `shared/capabilities.py`

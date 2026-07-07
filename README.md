@@ -30,14 +30,13 @@ Restart Codex if skills do not appear immediately.
 
 ## Configure Higgsfield
 
-Install and log in to the Higgsfield CLI:
+Run the one-time setup helper:
 
 ```bash
-npm install -g @higgsfield/cli
-higgsfield auth login
+python skills/nv-generate-video/scripts/setup_higgsfield.py
 ```
 
-The default generation provider is `higgsfield` and the default model is `seedance_2_0`.
+It installs `~/.codex/bin/higgsfield.exe` if missing, starts browser login when needed, and automatically selects the only available workspace. The default generation provider is `higgsfield` and the default model is `seedance_2_0`.
 
 ## Optional APIMart Legacy Key
 
@@ -58,7 +57,7 @@ HIGGSFIELD_API_KEY=your-apimart-key
 - Python 3.10+
 - ffmpeg on PATH
 - `requests` (`pip install -r requirements.txt`)
-- Higgsfield CLI for default generation (`npm install -g @higgsfield/cli`)
+- Higgsfield CLI for default generation (`setup_higgsfield.py` installs a local copy)
 
 ## Workflow
 

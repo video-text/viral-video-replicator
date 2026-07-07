@@ -19,6 +19,7 @@ Per-shot prompts should come from:
 
 ## API errors
 
-- Missing Higgsfield CLI: install `npm install -g @higgsfield/cli`.
-- Not authenticated: run `higgsfield auth login`.
+- Missing Higgsfield CLI: run `python scripts/setup_higgsfield.py`.
+- Not authenticated: run `python scripts/setup_higgsfield.py`.
+- No workspace selected: generation auto-selects the only workspace; with multiple workspaces, choose one via `higgsfield workspace set <id>`.
 - APIMart legacy mode: missing `HIGGSFIELD_API_KEY` means set it in `.env` or environment variables.
